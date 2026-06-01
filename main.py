@@ -2,8 +2,13 @@ from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
 import random
 import math
+import sys
+import os
 
-Audio('bg.mp3',volume=0.5, loop=True, autoplay=True)
+if getattr(sys, 'frozen', False):
+    os.chdir(os.path.dirname(sys.executable))
+
+Audio('Assets/sound/bg.mp3',volume=0.5, loop=True, autoplay=True)
 
 class HealthBar(Entity):
     def __init__(self , max_health = 100):
@@ -44,7 +49,7 @@ class Player(Entity):
         self.hand_pistol = Entity(
             parent=self.controller.camera_pivot,
             model='quad',
-            texture='pistol', 
+            texture='./Assets/Img/pistol', 
             visible=False,   
             scale=1,
             z=1.5, y=-0.4, x=0.6
@@ -52,22 +57,15 @@ class Player(Entity):
         self.hand_gun = Entity(
             parent=self.controller.camera_pivot,
             model='quad',
-            texture='gun', 
+            texture='./Assets/Img/gun', 
             visible=False,        
             scale=1,
            
             z=1.5, y=-0.5, x=1
         )
-        self.hand_knife = Entity(
-            parent=self.controller.camera_pivot,
-            model='quad',
-            texture='brick', 
-            visible=False,
-            scale=1,
-            z=1.5, y=-0.8, x=0.6
-        )
+        
 
-        self.weapons         = [self.hand_pistol, self.hand_gun, self.hand_knife]
+        self.weapons         = [self.hand_pistol, self.hand_gun]
         self.current_weapon  = 0
         self.health_bar      = HealthBar(max_health=100)
         self.hp              = 100
@@ -78,7 +76,7 @@ class Player(Entity):
     def take_damage(self , amount):
         if not self.alive:
             return
-        Audio('damage', volume=1.2)
+        Audio('Assets/sound/damage', volume=1.2)
         self.hp -= amount
         self.health_bar.set_health(self.hp)
         camera.shake(duration=0.1 , magnitude=3)
@@ -106,7 +104,7 @@ class Player(Entity):
         if key == 'scroll down':
             self.current_weapon = (self.current_weapon - 1) % len(self.weapons)
             self.switch_weapon()
-        if key == 'left mouse down' and self.current_weapon != 2:
+        if key == 'left mouse down' :
             Bullet(
                 model = 'sphere',
                 color = color.gold ,
@@ -132,7 +130,7 @@ class Enemy(Entity):
 
         super().__init__(
             model = 'cube',
-            texture = "enemy",
+            texture = "./Assets/Img/enemy",
             scale=(1.5,2.5,1)
             , position = (x , 1.5 , z),
             collider='box',
@@ -177,7 +175,7 @@ class Enemy(Entity):
 class Bullet(Entity):
     def __init__(self, speed=50, lifetime=10, **kwargs):
         super().__init__(**kwargs)
-        Audio('shoot', volume=0.9)
+        Audio('Assets/sound/shoot', volume=0.9)
         camera.shake(duration=0.1 , magnitude=1)
         self.speed = speed
         self.lifetime = lifetime
