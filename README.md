@@ -22,5 +22,5 @@ To Change Weapon - Mouse Scroll
 
 ## How to play
 
-You just need to download the main.zip from here and after exracting it open , the main executable file and after it you are ready to play !!!  
+You just need to download the main.zip from here or from https://atharv-shukla-987.itch.io/death-trap  and after exracting it open , the main executable file and after it you are ready to play !!!  
 
